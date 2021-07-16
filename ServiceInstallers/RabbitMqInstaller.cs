@@ -18,7 +18,7 @@ namespace Framework.ServiceInstallers
                 Password = configuration["RabbitMqConfiguration:Password"],
             };
             services.AddSingleton(connection);
-            services.AddScoped<RabbitMqService>();
+            services.AddScoped<IRabbitMqService, RabbitMqService>();
         }
     }
 }

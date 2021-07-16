@@ -1,12 +1,7 @@
 ﻿using Framework.Annotations;
-using Framework.Exceptions;
-using Framework.Extensions;
 using Framework.Helper;
 using Framework.Interfaces;
-using Framework.Models;
-using Framework.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,21 +11,17 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Background.Consumers
+namespace Framework.Services
 {
-    public class ConsoleSchedularService<TContext, TState, TStartup> : BackgroundService
+    public class ConsoleSchedularService<TContext, TStartup> : BackgroundService
         where TContext : DbContext
-        where TState : class, new()
     {
         private readonly IServiceProvider serviceProvider;
-        private readonly ILogger logger;
-        private TState state { get; set; }
-        public ConsoleSchedularService(ILogger<ConsoleHostedService<TContext, TState, TStartup>> logger, IServiceProvider serviceProvider,
-            TState state)
+        private readonly ILogger<ConsoleSchedularService<TContext, TStartup>> logger;
+        public ConsoleSchedularService(ILogger<ConsoleSchedularService<TContext, TStartup>> logger, IServiceProvider serviceProvider)
         {
             this.logger = logger;
             this.serviceProvider = serviceProvider;
-            this.state = state;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)

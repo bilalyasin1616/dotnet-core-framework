@@ -16,21 +16,18 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Background.Consumers
+namespace Framework.Services
 {
-    public class ConsoleHostedService<TContext, TState, TStartup> : BackgroundService 
-        where TContext : DbContext 
-        where TState : class, new()
+    public class ConsoleHostedService<TContext, IState, TStartup> : BackgroundService 
+        where TContext : DbContext
     {
-
-        private readonly RabbitMqService rabbitMqService;
+        private readonly IRabbitMqService rabbitMqService;
         private readonly IConfiguration configuration;
         private readonly IServiceProvider serviceProvider;
-        private readonly ILogger logger;
-        private TState state { get; set; }
-        public ConsoleHostedService(RabbitMqService rabbitMqService, IConfiguration configuration,
-            ILogger<ConsoleHostedService<TContext, TState, TStartup>> logger, IServiceProvider serviceProvider,
-            TState state)
+        private readonly ILogger<ConsoleHostedService<TContext, IState, TStartup>> logger;
+        private IState state { get; set; }
+        public ConsoleHostedService(IRabbitMqService rabbitMqService, IConfiguration configuration,
+            ILogger<ConsoleHostedService<TContext, IState, TStartup>> logger, IServiceProvider serviceProvider, IState state)
         {
             this.rabbitMqService = rabbitMqService;
             this.configuration = configuration;
@@ -55,12 +52,12 @@ namespace Background.Consumers
                 var queueAttr = method.GetCustomAttribute<BackgroundRequest>();
                 var isAwaitable = method.ReturnType.GetMethod(nameof(Task.GetAwaiter)) != null;
                 rabbitMqService.ReceiveRequest(queueAttr.Queue, queueAttr.TypeOfRequest,
-                    (Func<object, TState, ConsoleRequestMeta, Task<bool>>)(async (data, state, meta) =>
+                    (Func<object, IState, ConsoleRequestMeta, Task<bool>>)(async (data, state, meta) =>
                         await HandleRequest(requestServiceType, method, data, state, isAwaitable)));
             });
         }
 
-        private async Task<bool> HandleRequest(Type requestServiceType, MethodInfo method, object data, TState state, bool isAwaitable)
+        private async Task<bool> HandleRequest(Type requestServiceType, MethodInfo method, object data, IState state, bool isAwaitable)
         {
             try
             {
