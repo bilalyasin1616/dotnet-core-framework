@@ -30,7 +30,7 @@ namespace Framework.ServiceInstallers
             new DataInstaller<TContext>().InstallServices(services, configuration);
             interfaces?.ForEach(intface => services.InstallServicesFromInterface(intface));
             services.AddSingleton(typeof(IState), new TState());
-            services.AddHostedService<ConsoleHostedService<TContext, IState, TStartup>>();
+            services.AddHostedService<ConsoleHostedService<TContext, IState, TState, TStartup>>();
             services.AddHostedService<ConsoleSchedularService<TContext, TStartup>>();
         }
 

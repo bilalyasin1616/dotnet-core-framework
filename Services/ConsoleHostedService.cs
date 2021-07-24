@@ -18,16 +18,16 @@ using System.Threading.Tasks;
 
 namespace Framework.Services
 {
-    public class ConsoleHostedService<TContext, IState, TStartup> : BackgroundService 
+    public class ConsoleHostedService<TContext, IState, TState, TStartup> : BackgroundService 
         where TContext : DbContext
     {
         private readonly IRabbitMqService rabbitMqService;
         private readonly IConfiguration configuration;
         private readonly IServiceProvider serviceProvider;
-        private readonly ILogger<ConsoleHostedService<TContext, IState, TStartup>> logger;
+        private readonly ILogger<ConsoleHostedService<TContext, IState, TState, TStartup>> logger;
         private IState state { get; set; }
         public ConsoleHostedService(IRabbitMqService rabbitMqService, IConfiguration configuration,
-            ILogger<ConsoleHostedService<TContext, IState, TStartup>> logger, IServiceProvider serviceProvider, IState state)
+            ILogger<ConsoleHostedService<TContext, IState, TState, TStartup>> logger, IServiceProvider serviceProvider, IState state)
         {
             this.rabbitMqService = rabbitMqService;
             this.configuration = configuration;
@@ -52,12 +52,12 @@ namespace Framework.Services
                 var queueAttr = method.GetCustomAttribute<BackgroundRequest>();
                 var isAwaitable = method.ReturnType.GetMethod(nameof(Task.GetAwaiter)) != null;
                 rabbitMqService.ReceiveRequest(queueAttr.Queue, queueAttr.TypeOfRequest,
-                    (Func<object, IState, ConsoleRequestMeta, Task<bool>>)(async (data, state, meta) =>
+                    (Func<object, TState, ConsoleRequestMeta, Task<bool>>)(async (data, state, meta) =>
                         await HandleRequest(requestServiceType, method, data, state, isAwaitable)));
             });
         }
 
-        private async Task<bool> HandleRequest(Type requestServiceType, MethodInfo method, object data, IState state, bool isAwaitable)
+        private async Task<bool> HandleRequest(Type requestServiceType, MethodInfo method, object data, TState state, bool isAwaitable)
         {
             try
             {
