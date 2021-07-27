@@ -8,7 +8,7 @@ namespace Framework.ServiceInstallers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration) 
         {
-            services.AddDbContext<C>(options => options.UseNpgsql(configuration["ConnectionString"]));
+            services.AddDbContext<C>(options => options.UseNpgsql(configuration["PostgressDatabaseConnection"]));
         }
     }
 }

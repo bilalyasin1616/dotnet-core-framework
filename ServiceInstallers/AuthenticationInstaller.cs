@@ -23,7 +23,7 @@ namespace Framework.ServiceInstallers
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["TokenAuthentication:Key"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:EncryptionKey"])),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };

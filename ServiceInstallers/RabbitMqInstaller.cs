@@ -10,15 +10,20 @@ namespace Framework.ServiceInstallers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration, Type typeOfStartup)
         {
-            var connection = new ConnectionFactory()
+            
+            if (configuration["RabbitMq:Uri"] != null && bool.Parse(configuration["RabbitMq:Enabled"]))
             {
-                HostName = configuration["RabbitMqConfiguration:Uri"],
-                Port = int.Parse(configuration["RabbitMqConfiguration:Port"]),
-                UserName = configuration["RabbitMqConfiguration:Username"],
-                Password = configuration["RabbitMqConfiguration:Password"],
-            };
-            services.AddSingleton(connection);
-            services.AddScoped<IRabbitMqService, RabbitMqService>();
+                var connection = new ConnectionFactory()
+                {
+                    HostName = configuration["RabbitMq:Uri"],
+                    Port = int.Parse(configuration["RabbitMq:Port"]),
+                    UserName = configuration["RabbitMq:Username"],
+                    Password = configuration["RabbitMq:Password"],
+                };
+                services.AddSingleton(connection);
+                services.AddScoped<IRabbitMqService, RabbitMqService>();
+
+            }
         }
     }
 }
