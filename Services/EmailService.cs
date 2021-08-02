@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using Framework.Exceptions;
+using Microsoft.Extensions.Configuration;
+using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
@@ -11,13 +13,15 @@ namespace Framework.Services
 
         const string HOST = "smtp.gmail.com";
 
-        public EmailService(string fromEmail, string password)
+        public EmailService(IConfiguration configuration)
         {
-            FromEmail = fromEmail;
-            Password = password;
+            if (configuration["SmtpEmailConfiguration:FromEmail"] == null || configuration["SmtpEmailConfiguration:FromEmailPassword"] == null)
+                throw new CustomException("From email or from email password is not defined in configuration make sure to have SmtpEmailConfiguration:FromEmail and SmtpEmailConfiguration:FromEmailPassword in your configuration");
+            FromEmail = configuration["SmtpEmailConfiguration:FromEmail"];
+            Password = configuration["SmtpEmailConfiguration:FromEmailPassword"];
         }
 
-        public async Task SendEmailAsync(string subject, string body, string toAddress, string fromName)
+        public virtual async Task SendEmailAsync(string subject, string body, string toAddress, string fromName)
         {
             MailMessage message = new MailMessage();
             SmtpClient smtp = new SmtpClient();

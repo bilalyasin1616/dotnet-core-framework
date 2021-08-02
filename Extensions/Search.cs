@@ -1,5 +1,6 @@
 ﻿using Framework.Exceptions;
 using Framework.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Framework.Extensions
@@ -101,5 +102,6 @@ namespace Framework.Extensions
         {
             return operand.Contains(filter.Value);
         }
+
     }
 }
