@@ -116,7 +116,8 @@ namespace Framework.Models
         {
             ResponseCode = ResponseCodes.InternalServerError;
             Msg = operation;
-            Exception = new ExceptionResponse(exception);
+            if (exception != null)
+                Exception = new ExceptionResponse(exception);
             if (errors.NotNullOrEmpty())
                 Errors = errors;
             if (warnings.NotNullOrEmpty())
