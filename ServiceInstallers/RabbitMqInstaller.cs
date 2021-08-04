@@ -10,8 +10,7 @@ namespace Framework.ServiceInstallers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration, Type typeOfStartup)
         {
-            
-            if (configuration["RabbitMq:Uri"] != null && bool.Parse(configuration["RabbitMq:Enabled"]))
+            if (bool.Parse(configuration["RabbitMq:Enabled"]) && configuration["RabbitMq:Uri"] != null)
             {
                 var connection = new ConnectionFactory()
                 {
@@ -22,7 +21,6 @@ namespace Framework.ServiceInstallers
                 };
                 services.AddSingleton(connection);
                 services.AddScoped<IRabbitMqService, RabbitMqService>();
-
             }
         }
     }
