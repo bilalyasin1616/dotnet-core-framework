@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Framework.Extensions
 {
@@ -53,6 +55,21 @@ namespace Framework.Extensions
             if (orignalItem == null)
                 list.Add(updatedItem);
             return updatedItem;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static async Task ForEachAsync<T>(this List<T> list, Func<T, Task> func)
+        {
+            foreach (var value in list)
+            {
+                await func(value);
+            }
         }
     }
 }

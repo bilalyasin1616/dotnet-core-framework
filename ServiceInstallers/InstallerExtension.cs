@@ -16,7 +16,7 @@ namespace Framework.ServiceInstallers
         {
             TypeHelper.CreateObjects<IInstaller>().ForEach(rc => rc.InstallServices(services, configuration, typeof(TStartup)));
             TypeHelper.CreateObjects<IApiInstaller>().ForEach(rc => rc.InstallServices(services, configuration, typeof(TStartup)));
-            new DataInstaller<TContext>().InstallServices(services, configuration);
+            new PostgressInstaller<TContext>().InstallServices(services, configuration);
             services.AddScoped(typeof(IState), typeof(TState));
             interfaces?.ForEach(intface => services.InstallServicesFromInterface(intface));
         }
@@ -27,7 +27,7 @@ namespace Framework.ServiceInstallers
         {
             TypeHelper.CreateObjects<IInstaller>().ForEach(rc => rc.InstallServices(services, configuration, typeof(TStartup)));
             TypeHelper.CreateObjects<IConsoleInstaller>().ForEach(rc => rc.InstallServices(services, configuration, typeof(TStartup)));
-            new DataInstaller<TContext>().InstallServices(services, configuration);
+            new PostgressInstaller<TContext>().InstallServices(services, configuration);
             interfaces?.ForEach(intface => services.InstallServicesFromInterface(intface));
             services.AddSingleton(typeof(IState), new TState());
             services.AddHostedService<ConsoleHostedService<TContext, IState, TState, TStartup>>();

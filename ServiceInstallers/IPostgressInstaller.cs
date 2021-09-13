@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Framework.ServiceInstallers
 {
-    public interface IDataInstaller
+    public interface IPostgressInstaller
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration);
     }
