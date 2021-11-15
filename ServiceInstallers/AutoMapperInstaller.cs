@@ -1,4 +1,4 @@
-﻿using Framework.Helper;
+﻿using Framework.Helpers;
 using Framework.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

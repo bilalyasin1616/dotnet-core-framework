@@ -12,7 +12,7 @@ namespace Framework.Exceptions
             Errors = errors;
             Warnings = warnings;
         }
-        public CustomException(string msg,Exception innerException, List<string> errors = null, List<string> warnings = null) : base(msg, innerException)
+        public CustomException(string msg, Exception innerException, List<string> errors = null, List<string> warnings = null) : base(msg, innerException)
         {
             Errors = errors;
             Warnings = warnings;

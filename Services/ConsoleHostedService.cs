@@ -1,7 +1,7 @@
 ﻿using Framework.Annotations;
 using Framework.Exceptions;
 using Framework.Extensions;
-using Framework.Helper;
+using Framework.Helpers;
 using Framework.Interfaces;
 using Framework.Models;
 using Framework.Services;
@@ -89,7 +89,6 @@ namespace Framework.Services
                 return false;
             }
             return true;
-            
         }
     }
 }

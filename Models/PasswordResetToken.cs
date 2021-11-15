@@ -1,4 +1,4 @@
-﻿using Framework.Helper;
+﻿using Framework.Helpers;
 using Framework.Services;
 using Newtonsoft.Json;
 using System;
@@ -27,7 +27,7 @@ namespace Framework.Models
             };
             var tokenStr = JsonConvert.SerializeObject(token);
             tokenStr = EncryptionService.Encrypt(tokenStr, secretKey);
-            return UrlHelper.MakeUrlStringSafe(tokenStr);
+            return UrlHelper.MakeStringUrlSafe(tokenStr);
         }
 
         public static PasswordResetToken Parse(string token, string secretKey)

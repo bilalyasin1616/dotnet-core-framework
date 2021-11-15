@@ -12,7 +12,7 @@ namespace Framework.ServiceInstallers
         public void InstallServices(IServiceCollection services, IConfiguration configuration, Type typeOfStartup)
         {
             if (configuration["Authentication:EncryptionKey"] == null)
-                throw new Exception("Failed to configure authentication make sure you have defined 'Authentication:EncryptionKey' in you configuration file/environment variable.");
+                throw new Exception("Failed to configure authentication make sure you have defined 'Authentication:EncryptionKey' in your configuration file/environment variable.");
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

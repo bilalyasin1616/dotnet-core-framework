@@ -1,5 +1,4 @@
 ﻿using Framework.Exceptions;
-using Framework.Helper;
 using Framework.Models;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -41,26 +40,30 @@ namespace Framework.RequestConfigurators
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            return context.Response.WriteAsync(ResponseBase.GetBadRequest(exception.Message, exception.Errors).ToString());
+            var exceptionsResponse = new ExceptionResponse(exception, exception.Errors)
+            {
+                Message = "Bad Request to the server."
+            };
+            return context.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(exceptionsResponse));
         }
 
         private static Task HandleCustomExceptionAsync(HttpContext context, CustomException exception)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            var response = EnvironmentHelper.IsDevelopment() || EnvironmentHelper.IsStaging() ?
-                ResponseBase.GetInternalServerError(exception.Message, exception, exception.Errors, exception.Warnings) :
-                ResponseBase.GetInternalServerError(exception.Message, null, exception.Errors, exception.Warnings);
-            return context.Response.WriteAsync(response.ToString());
+            var exceptionsResponse = new ExceptionResponse(exception, exception.Errors);
+            return context.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(exceptionsResponse));
         }
 
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            var response = EnvironmentHelper.IsDevelopment() || EnvironmentHelper.IsStaging() ?
-                ResponseBase.GetInternalServerError("Internal server error, please contact support.", exception) : ResponseBase.GetInternalServerError(exception.Message);
-            return context.Response.WriteAsync(response.ToString());
+            var exceptionsResponse = new ExceptionResponse(exception)
+            {
+                Message = "Internal server error, please contact support."
+            };
+            return context.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(exceptionsResponse));
         }
     }
 }

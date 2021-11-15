@@ -1,5 +1,4 @@
 ﻿using Framework.Exceptions;
-using Framework.Models;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +13,7 @@ namespace Framework.Extensions
             {
                 return operand == bool.Parse(filter.Value);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw new CustomException($"Failed to parse filter, Filter: {filter.Key} Value: {filter.Value}");
             }
@@ -26,7 +25,7 @@ namespace Framework.Extensions
             {
                 return operand == int.Parse(filter.Value);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw new CustomException($"Failed to parse filter, Filter: {filter.Key} Value: {filter.Value}");
             }
@@ -40,7 +39,7 @@ namespace Framework.Extensions
                     return false;
                 return operand == int.Parse(filter.Value);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw new CustomException($"Failed to parse filter, Filter: {filter.Key} Value: {filter.Value}");
             }
@@ -52,7 +51,7 @@ namespace Framework.Extensions
             {
                 return operand == decimal.Parse(filter.Value);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw new CustomException($"Failed to parse filter, Filter: {filter.Key} Value: {filter.Value}");
             }
@@ -66,7 +65,7 @@ namespace Framework.Extensions
                     return false;
                 return operand == decimal.Parse(filter.Value);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw new CustomException($"Failed to parse filter, Filter: {filter.Key} Value: {filter.Value}");
             }
@@ -78,7 +77,7 @@ namespace Framework.Extensions
             {
                 return operand == short.Parse(filter.Value);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw new CustomException($"Failed to parse filter, Filter: {filter.Key} Value: {filter.Value}");
             }
@@ -92,7 +91,7 @@ namespace Framework.Extensions
                     return false;
                 return operand == short.Parse(filter.Value);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw new CustomException($"Failed to parse filter, Filter: {filter.Key} Value: {filter.Value}");
             }

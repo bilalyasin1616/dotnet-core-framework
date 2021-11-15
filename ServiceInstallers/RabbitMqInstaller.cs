@@ -10,7 +10,7 @@ namespace Framework.ServiceInstallers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration, Type typeOfStartup)
         {
-            if (bool.Parse(configuration["RabbitMq:Enabled"]) && configuration["RabbitMq:Uri"] != null)
+            if (configuration["RabbitMq:Enabled"]!=null && bool.Parse(configuration["RabbitMq:Enabled"]) && configuration["RabbitMq:Uri"] != null)
             {
                 var connection = new ConnectionFactory()
                 {

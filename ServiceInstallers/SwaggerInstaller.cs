@@ -10,6 +10,8 @@ namespace Framework.ServiceInstallers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration, Type typeOfStartup)
         {
+            if (configuration["Swagger:Version"] == null || configuration["Swagger:Title"] == null)
+                throw new Exception("Swagger configuration failed, make sure to define 'Swagger:Version' and 'Swagger:Title' in your configuration.");
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(configuration["Swagger:Version"], new OpenApiInfo { Title = configuration["Swagger:Title"], Version = configuration["Swagger:Version"] });

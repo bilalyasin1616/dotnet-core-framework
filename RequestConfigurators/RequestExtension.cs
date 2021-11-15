@@ -1,4 +1,4 @@
-﻿using Framework.Helper;
+﻿using Framework.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 

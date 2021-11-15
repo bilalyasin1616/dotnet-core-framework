@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Framework.Helper
+namespace Framework.Helpers
 {
     public static class EnvironmentHelper
     {
@@ -10,6 +10,7 @@ namespace Framework.Helper
             Staging,
             Production
         }
+
         public static string GetEnvironment()
         {
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == null)

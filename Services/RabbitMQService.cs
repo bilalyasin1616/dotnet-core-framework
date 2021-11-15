@@ -70,7 +70,7 @@ namespace Framework.Services
                 else
                 {
                     logger.LogError($"Request failed to complete with request id {args.BasicProperties.MessageId} from {queue}");
-                    SendFailedRequest($"{queue}Failed", message);
+                    SendFailedRequest($"{queue}-failed", message);
                 }
                 _channel.BasicAck(deliveryTag: args.DeliveryTag, multiple: false);
             };

@@ -24,7 +24,7 @@ namespace Framework.Extensions
         {
             var config = new MapperConfiguration(cfg => { cfg.CreateMap<S, D>(); });
             var mapper = config.CreateMapper();
-            return mapper.Map<S, D>(source, destination);
+            return mapper.Map(source, destination);
         }
     }
 }

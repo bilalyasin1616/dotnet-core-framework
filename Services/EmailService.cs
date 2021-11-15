@@ -1,5 +1,6 @@
 ﻿using Framework.Exceptions;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -8,24 +9,25 @@ namespace Framework.Services
 {
     public class EmailService
     {
-        string FromEmail { get; }
-        string Password { get; }
+        private readonly string fromEmail;
+
+        private readonly string password;
 
         const string HOST = "smtp.gmail.com";
 
         public EmailService(IConfiguration configuration)
         {
-            if (configuration["SmtpEmailConfiguration:FromEmail"] == null || configuration["SmtpEmailConfiguration:FromEmailPassword"] == null)
-                throw new CustomException("From email or from email password is not defined in configuration make sure to have SmtpEmailConfiguration:FromEmail and SmtpEmailConfiguration:FromEmailPassword in your configuration");
-            FromEmail = configuration["SmtpEmailConfiguration:FromEmail"];
-            Password = configuration["SmtpEmailConfiguration:FromEmailPassword"];
+            if (configuration["SmtpEmailConfiguration:Email"] == null || configuration["SmtpEmailConfiguration:Password"] == null)
+                throw new Exception("From email or from email password is not defined in configuration make sure to have SmtpEmailConfiguration:Email and SmtpEmailConfiguration:Password in your configuration");
+            fromEmail = configuration["SmtpEmailConfiguration:Email"];
+            password = configuration["SmtpEmailConfiguration:Password"];
         }
 
         public virtual async Task SendEmailAsync(string subject, string body, string toAddress, string fromName)
         {
             MailMessage message = new MailMessage();
             SmtpClient smtp = new SmtpClient();
-            message.From = new MailAddress(FromEmail, fromName);
+            message.From = new MailAddress(fromEmail, fromName);
             message.To.Add(new MailAddress(toAddress));
             message.Subject = subject;
             message.IsBodyHtml = true; //to make message body as html  
@@ -34,7 +36,7 @@ namespace Framework.Services
             smtp.Host = HOST;
             smtp.EnableSsl = true;
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new NetworkCredential(FromEmail, Password);
+            smtp.Credentials = new NetworkCredential(fromEmail, password);
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             await smtp.SendMailAsync(message);
         }

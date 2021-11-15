@@ -9,7 +9,12 @@ namespace Framework.ServiceInstallers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration, Type typeOfStartup)
         {
-            services.AddScoped<IMongoClient, MongoClient>(options => new MongoClient(configuration["Database:MongoConnection"]));
+            if(configuration["Database:MongoConnection"]==null)
+            {
+                Console.WriteLine("MongoDb is not configured to be used, make sure you have 'Database:MongoConnection' property defined in your config file");
+                return;
+            }
+            services.AddScoped<IMongoClient, MongoClient>(options => new MongoClient());
         }
     }
 }

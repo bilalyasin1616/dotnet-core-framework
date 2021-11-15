@@ -1,8 +1,8 @@
-﻿namespace Framework.Helper
+﻿namespace Framework.Helpers
 {
     public class UrlHelper
     {
-        public static string MakeUrlStringSafe(string token)
+        public static string MakeStringUrlSafe(string token)
         {
             return token.TrimEnd(new char[] { '=' }).Replace('+', '-').Replace('/', '_');
         }

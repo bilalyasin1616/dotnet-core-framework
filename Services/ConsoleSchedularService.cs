@@ -1,5 +1,5 @@
 ﻿using Framework.Annotations;
-using Framework.Helper;
+using Framework.Helpers;
 using Framework.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,4 +1,4 @@
-﻿using Framework.Helper;
+﻿using Framework.Helpers;
 using Framework.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
