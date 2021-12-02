@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Net;
 
 namespace Framework.Exceptions
 {
-    public class BadRequestException : CustomException
+    public class BadRequestException : StatusCodeException
     {
-        public BadRequestException(string msg, List<string> errors = null) : base(msg)
+        public BadRequestException(string message, string type) : base(message, type, HttpStatusCode.BadRequest)
         {
-            Errors = errors;
         }
     }
 }

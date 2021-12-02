@@ -1,6 +1,7 @@
 ﻿using Framework.Exceptions;
 using Framework.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -16,42 +17,33 @@ namespace Framework.RequestConfigurators
             _next = next;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, ILogger<ExceptionHandler> logger)
         {
             try
             {
                 await _next(context);
             }
-            catch (BadRequestException badRequestException)
+            catch (StatusCodeException statusCodeException)
             {
-                await HandleBadRequestExceptionAsync(context, badRequestException);
-            }
-            catch (CustomException customException)
-            {
-                await HandleCustomExceptionAsync(context, customException);
+                logger.LogError(statusCodeException, statusCodeException.Message);
+                await HandleStatusCodeException(context, statusCodeException);
             }
             catch (Exception exception)
             {
+                logger.LogError(exception, "Internal server error.");
                 await HandleExceptionAsync(context, exception);
             }
         }
 
-        private static Task HandleBadRequestExceptionAsync(HttpContext context, BadRequestException exception)
+        private static Task HandleStatusCodeException(HttpContext context, StatusCodeException exception)
         {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            var exceptionsResponse = new ExceptionResponse(exception, exception.Errors)
+            context.Response.StatusCode = (int)exception.HttpStatusCode;
+            var exceptionsResponse = new ExceptionResponse()
             {
-                Message = "Bad Request to the server."
+                Message = exception.Message,
+                Type = exception.Type
             };
-            return context.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(exceptionsResponse));
-        }
-
-        private static Task HandleCustomExceptionAsync(HttpContext context, CustomException exception)
-        {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            var exceptionsResponse = new ExceptionResponse(exception, exception.Errors);
             return context.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(exceptionsResponse));
         }
 
@@ -59,9 +51,10 @@ namespace Framework.RequestConfigurators
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            var exceptionsResponse = new ExceptionResponse(exception)
+            var exceptionsResponse = new ExceptionResponse()
             {
-                Message = "Internal server error, please contact support."
+                Message = "Internal server error.",
+                Type = "Unkown"
             };
             return context.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(exceptionsResponse));
         }

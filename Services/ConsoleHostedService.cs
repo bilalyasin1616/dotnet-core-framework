@@ -1,10 +1,8 @@
 ﻿using Framework.Annotations;
-using Framework.Exceptions;
 using Framework.Extensions;
 using Framework.Helpers;
 using Framework.Interfaces;
 using Framework.Models;
-using Framework.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Services
 {
-    public class ConsoleHostedService<TContext, IState, TState, TStartup> : BackgroundService 
+    public class ConsoleHostedService<TContext, IState, TState, TStartup> : BackgroundService
         where TContext : DbContext
     {
         private readonly IRabbitMqService rabbitMqService;
@@ -26,6 +24,7 @@ namespace Framework.Services
         private readonly IServiceProvider serviceProvider;
         private readonly ILogger<ConsoleHostedService<TContext, IState, TState, TStartup>> logger;
         private IState state { get; set; }
+
         public ConsoleHostedService(IRabbitMqService rabbitMqService, IConfiguration configuration,
             ILogger<ConsoleHostedService<TContext, IState, TState, TStartup>> logger, IServiceProvider serviceProvider, IState state)
         {
@@ -76,12 +75,7 @@ namespace Framework.Services
                     {
                         method.Invoke(service, new object[] { data });
                     }
-
                 }
-            }
-            catch (CustomException cex)
-            {
-                logger.LogWarning(cex, "Custom exception in completing the request");
             }
             catch (Exception ex)
             {

@@ -9,9 +9,9 @@ namespace Framework.Helpers
     {
         public static List<TInterface> CreateObjects<TInterface>()
         {
-            return Assembly.GetExecutingAssembly().ExportedTypes.Where(c =>
-                typeof(TInterface).IsAssignableFrom(c) && c.IsClass)
-                .Select(Activator.CreateInstance).Cast<TInterface>().ToList();
+            return GetAssignableTypes(typeof(TInterface))
+                .Select(Activator.CreateInstance)
+                .Cast<TInterface>().ToList();
         }
 
         public static List<Type> GetAssignableTypes(Type type)

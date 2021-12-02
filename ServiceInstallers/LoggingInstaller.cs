@@ -4,7 +4,7 @@ using System;
 
 namespace Framework.ServiceInstallers
 {
-    public class LoggingInstaller
+    public class LoggingInstaller : IInstaller
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration, Type typeOfStartup)
         {

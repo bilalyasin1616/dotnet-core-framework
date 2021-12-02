@@ -2,27 +2,23 @@
 using Framework.Services;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.Models
 {
-    public class PasswordResetToken
+    public class EncryptedToken
     {
-        public DateTime DateCreated { get; set; }
+        public DateTime Expiry { get; set; }
         private string Id { get; set; }
-        private PasswordResetToken()
-        {
 
+        private EncryptedToken()
+        {
         }
 
-        public static string Generate(string secretKey)
+        public static string Generate(string secretKey, TimeSpan timeSpan)
         {
-            var token = new PasswordResetToken()
+            var token = new EncryptedToken()
             {
-                DateCreated = DateTime.UtcNow,
+                Expiry = DateTime.UtcNow.Add(timeSpan),
                 Id = Guid.NewGuid().ToString()
             };
             var tokenStr = JsonConvert.SerializeObject(token);
@@ -30,11 +26,11 @@ namespace Framework.Models
             return UrlHelper.MakeStringUrlSafe(tokenStr);
         }
 
-        public static PasswordResetToken Parse(string token, string secretKey)
+        public static EncryptedToken Parse(string token, string secretKey)
         {
             token = UrlHelper.RevertUrlSafe(token);
             token = EncryptionService.Decrypt(token, secretKey);
-            return JsonConvert.DeserializeObject<PasswordResetToken>(token);
+            return JsonConvert.DeserializeObject<EncryptedToken>(token);
         }
     }
 }

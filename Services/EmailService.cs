@@ -1,5 +1,4 @@
-﻿using Framework.Exceptions;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Net;
 using System.Net.Mail;
@@ -13,7 +12,7 @@ namespace Framework.Services
 
         private readonly string password;
 
-        const string HOST = "smtp.gmail.com";
+        private const string HOST = "smtp.gmail.com";
 
         public EmailService(IConfiguration configuration)
         {
@@ -30,7 +29,7 @@ namespace Framework.Services
             message.From = new MailAddress(fromEmail, fromName);
             message.To.Add(new MailAddress(toAddress));
             message.Subject = subject;
-            message.IsBodyHtml = true; //to make message body as html  
+            message.IsBodyHtml = true; //to make message body as html
             message.Body = body;
             smtp.Port = 587;
             smtp.Host = HOST;

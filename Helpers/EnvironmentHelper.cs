@@ -22,10 +22,12 @@ namespace Framework.Helpers
         {
             return GetEnvironment() == Environments.Development.ToString().ToLower();
         }
+
         public static bool IsStaging()
         {
             return GetEnvironment() == Environments.Staging.ToString().ToLower();
         }
+
         public static bool IsProduction()
         {
             return GetEnvironment() == Environments.Production.ToString().ToLower();

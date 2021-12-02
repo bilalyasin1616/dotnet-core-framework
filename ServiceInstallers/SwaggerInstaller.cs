@@ -14,6 +14,7 @@ namespace Framework.ServiceInstallers
                 throw new Exception("Swagger configuration failed, make sure to define 'Swagger:Version' and 'Swagger:Title' in your configuration.");
             services.AddSwaggerGen(c =>
             {
+                c.EnableAnnotations();
                 c.SwaggerDoc(configuration["Swagger:Version"], new OpenApiInfo { Title = configuration["Swagger:Title"], Version = configuration["Swagger:Version"] });
                 var security = new Dictionary<string, IEnumerable<string>>
                 {

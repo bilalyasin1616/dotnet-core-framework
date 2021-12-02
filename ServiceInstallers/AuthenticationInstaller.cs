@@ -11,8 +11,8 @@ namespace Framework.ServiceInstallers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration, Type typeOfStartup)
         {
-            if (configuration["Authentication:EncryptionKey"] == null)
-                throw new Exception("Failed to configure authentication make sure you have defined 'Authentication:EncryptionKey' in your configuration file/environment variable.");
+            if (configuration["Encryption:AuthenticationKey"] == null)
+                throw new Exception("Failed to configure authentication make sure you have defined 'Encryption:AuthenticationKey' in your configuration file/environment variable.");
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -25,7 +25,7 @@ namespace Framework.ServiceInstallers
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:EncryptionKey"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Encryption:AuthenticationKey"])),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
